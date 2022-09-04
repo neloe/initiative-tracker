@@ -1,0 +1,42 @@
+{
+  "name": "initiative-tracker",
+  "version": "0.0.0",
+  "description": "Initiative Tracker for nonlocal TTRPGs",
+  "homepage": "",
+  "author": {
+    "name": "Nathan Eloe",
+    "email": "powerofazure@gmail.com",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": "^1.1.1",
+    "dashboardPanels": [
+      {
+        "name": "initiative",
+        "title": "Initiative",
+        "width": 2,
+        "file": "initiative.html",
+        "headerColor": "#525F78"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "MIT"
+}

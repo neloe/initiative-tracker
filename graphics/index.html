@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+
+		.monospace {
+			font-family: monospace;
+		}
+		li {
+			width: fit-content;
+		}
+	</style>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+	<div class="container-fluid">
+		<ul id="initiative">
+
+		</ul>
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+	<!--<p>
+		Hello, I'm one of the graphics in your bundle!
+		I'm where you put the graphics you want to run in your broadcast software!
+	</p>
+
+	<p>To edit me, open "<span id="path" class="monospace"></span>" in your favorite text editor or IDE.</p>
+
+	<p>You can use any libraries, frameworks, and tools you want. There are no limits.</p>
+
+	<p>Visit <a href="https://nodecg.com" target="_blank" rel="noopener">https://nodecg.com</a> for full documentation.</p>
+
+	<p>Have fun!</p>
+-->
+
+
+	<script>
+		const list = document.getElementById('initiative')
+		function add_character(charname)
+		{
+			const item = document.createElement('li')
+			item.setAttribute('class', 'list-group-item')
+			item.innerHTML=charname
+			list.appendChild(item)
+		}
+	
+		const initlistReplicant = nodecg.Replicant('initiative_list')
+
+		initlistReplicant.on('change', (nv, ov) => {
+			if (ov && nv.toString() != ov.toString()) {
+				while(list.firstChild)
+					list.removeChild(list.lastChild)
+				for (name of nv)
+					add_character(name)
+			}
+		})
+
+		// initialize init list
+		nodecg.readReplicant('initiative_list', 'initiative-tracker', value=>{
+			console.log(value)
+			for (x of value)
+				add_character(x)
+		})
+		//document.getElementById('path').textContent = `nodecg${window.location.pathname}`;
+
+		// You can access the NodeCG api anytime from the `window.nodecg` object
+		// Or just `nodecg` for short. Like this!:
+		//nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!');
+
+	</script>
+</body>
+</html>
