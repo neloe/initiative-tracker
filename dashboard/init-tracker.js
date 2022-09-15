@@ -50,98 +50,10 @@ const isAbove = function (nodeA, nodeB) {
     return rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2;
 };
 
-const mouseDownHandler = function (e) {
-    draggingEle = e.target;
-
-    // Calculate the mouse position
-    const rect = draggingEle.getBoundingClientRect();
-    x = e.pageX - rect.left;
-    y = e.pageY - rect.top;
-
-    // Attach the listeners to `document`
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
-};
-
-const mouseMoveHandler = function (e) {
-    const draggingRect = draggingEle.getBoundingClientRect();
-
-    if (!isDraggingStarted) {
-        isDraggingStarted = true;
-
-        // Let the placeholder take the height of dragging element
-        // So the next element won't move up
-        placeholder = document.createElement('div');
-        placeholder.classList.add('placeholder');
-        draggingEle.parentNode.insertBefore(placeholder, draggingEle.nextSibling);
-        placeholder.style.height = `${draggingRect.height}px`;
-    }
-
-    // Set position for dragging element
-    draggingEle.style.position = 'absolute';
-    draggingEle.style.top = `${e.pageY - y}px`;
-    draggingEle.style.left = `${e.pageX - x}px`;
-
-    // The current order
-    // prevEle
-    // draggingEle
-    // placeholder
-    // nextEle
-    const prevEle = draggingEle.previousElementSibling;
-    const nextEle = placeholder.nextElementSibling;
-
-    // The dragging element is above the previous element
-    // User moves the dragging element to the top
-    if (prevEle && isAbove(draggingEle, prevEle)) {
-        // The current order    -> The new order
-        // prevEle              -> placeholder
-        // draggingEle          -> draggingEle
-        // placeholder          -> prevEle
-        swap(placeholder, draggingEle);
-        swap(placeholder, prevEle);
-        return;
-    }
-
-    // The dragging element is below the next element
-    // User moves the dragging element to the bottom
-    if (nextEle && isAbove(nextEle, draggingEle)) {
-        // The current order    -> The new order
-        // draggingEle          -> nextEle
-        // placeholder          -> placeholder
-        // nextEle              -> draggingEle
-        swap(nextEle, placeholder);
-        swap(nextEle, draggingEle);
-    }
-};
-
-const mouseUpHandler = function () {
-    // Remove the placeholder
-    placeholder && placeholder.parentNode.removeChild(placeholder);
-
-    draggingEle.style.removeProperty('top');
-    draggingEle.style.removeProperty('left');
-    draggingEle.style.removeProperty('position');
-
-    x = null;
-    y = null;
-    draggingEle = null;
-    isDraggingStarted = false;
-
-    // Remove the handlers of `mousemove` and `mouseup`
-    document.removeEventListener('mousemove', mouseMoveHandler);
-    document.removeEventListener('mouseup', mouseUpHandler);
-    update_replicant()
-};
-
-// Query all items
-/*[].slice.call(list.querySelectorAll('.draggable')).forEach(function (item) {
-    item.addEventListener('mousedown', mouseDownHandler);
-});*/
-
-const remove_elt = function(elt_id)
+function remove_elt(elt_id)
 {
-    torm = document.getElementById(et_id)
-    torm.remove_elt
+    torm = document.getElementById(elt_id)
+    torm.remove()
     update_replicant()
 }
 
@@ -161,34 +73,67 @@ function generateUUID() { // Public Domain/MIT
     });
 }
 
+function move_up(elt_id)
+{
+
+}
+function move_down(elt_id)
+{
+    
+}
+
 function add_elt(text='')
 {
     const new_id = generateUUID()
     const new_elt = document.createElement('div')
     new_elt.setAttribute('id',new_id)
-    new_elt.setAttribute('class', 'draggable')
+    new_elt.setAttribute('class','draggable')
     const text_input = document.createElement('input')
     text_input.setAttribute('type','text')
     text_input.setAttribute('oninput','update_replicant()')
     text_input.setAttribute('value', text)
     new_elt.appendChild(text_input)
     const rmbutton = document.createElement('button')
-    rmbutton.setAttribute('onclick','document.getElementById("'+new_id+'").remove()')
+    rmbutton.setAttribute('onclick',`remove_elt("${new_id}")`)
     rmbutton.setAttribute('class','button')
     const icon = document.createElement('i')
     icon.setAttribute('class',"fa fa-trash")
-    new_elt.addEventListener('mousedown', mouseDownHandler)
-    text_input.removeEventListener('mousedown', mouseDownHandler)
-    rmbutton.removeEventListener('mousedown', mouseDownHandler)
     rmbutton.appendChild(icon)
+
+    const upbutton = document.createElement('button')
+    upbutton.setAttribute('onclick',`move_up("${new_id}")`)
+    upbutton.setAttribute('class','button')
+    const upicon = document.createElement('i')
+    upicon.setAttribute('class',"fa fa-angle-up")
+    upbutton.appendChild(upicon)
+
+    const downbutton = document.createElement('button')
+    downbutton.setAttribute('onclick',`move_down("${new_id}")`)
+    downbutton.setAttribute('class','button')
+    const downicon = document.createElement('i')
+    downicon.setAttribute('class',"fa fa-angle-down")
+    downbutton.setAttribute('disabled','true')
+    downbutton.appendChild(downicon)
+
+
     new_elt.appendChild(rmbutton)
-    
-    document.getElementById('list').appendChild(new_elt)
+    new_elt.appendChild(upbutton)
+    new_elt.appendChild(downbutton)
+    list.appendChild(new_elt)
+    console.log(new_elt.previousSibling, new_elt.previousElementSibling, new_elt.nextSibling)
+    if(!new_elt.previousElementSibling)
+        upbutton.setAttribute('disabled','true')
+    else
+    {
+        console.log(new_elt.previousElementSibling.childNodes)
+        new_elt.previousElementSibling.childNodes[3].disabled=false
+    }
 }
 
 // initialize init list
 nodecg.readReplicant('initiative_list', 'initiative-tracker', value=>{
     console.log(value)
-    for (x of value)
-        add_elt(x)
+    if (value)
+        for (x of value)
+            add_elt(x)
 })
