@@ -81,11 +81,16 @@ function move_up(elt_id)
     console.log(node.previousSibling)
     if (!node.previousElementSibling)
         node.childNodes[2].disabled=true
+    if (!node.nextElementSibling.nextElementSibling)
+        node.nextElementSibling.childNodes[3].disabled=true
+    node.nextElementSibling.childNodes[2].disabled=false
+    update_replicant()
     
 }
 function move_down(elt_id)
 {
-    
+    const node = document.getElementById(elt_id)
+    move_up(node.nextElementSibling.id)
 }
 
 function add_elt(text='')
