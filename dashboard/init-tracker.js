@@ -75,7 +75,13 @@ function generateUUID() { // Public Domain/MIT
 
 function move_up(elt_id)
 {
-
+    const node = document.getElementById(elt_id)
+    node.parentNode.insertBefore(node, node.previousSibling)
+    node.childNodes[3].disabled=false
+    console.log(node.previousSibling)
+    if (!node.previousElementSibling)
+        node.childNodes[2].disabled=true
+    
 }
 function move_down(elt_id)
 {
@@ -97,21 +103,21 @@ function add_elt(text='')
     rmbutton.setAttribute('onclick',`remove_elt("${new_id}")`)
     rmbutton.setAttribute('class','button')
     const icon = document.createElement('i')
-    icon.setAttribute('class',"fa fa-trash")
+    icon.setAttribute('class',"fa fa-trash fa-3x")
     rmbutton.appendChild(icon)
 
     const upbutton = document.createElement('button')
     upbutton.setAttribute('onclick',`move_up("${new_id}")`)
     upbutton.setAttribute('class','button')
     const upicon = document.createElement('i')
-    upicon.setAttribute('class',"fa fa-angle-up")
+    upicon.setAttribute('class',"fa fa-angle-up fa-3x")
     upbutton.appendChild(upicon)
 
     const downbutton = document.createElement('button')
     downbutton.setAttribute('onclick',`move_down("${new_id}")`)
     downbutton.setAttribute('class','button')
     const downicon = document.createElement('i')
-    downicon.setAttribute('class',"fa fa-angle-down")
+    downicon.setAttribute('class',"fa fa-angle-down fa-3x")
     downbutton.setAttribute('disabled','true')
     downbutton.appendChild(downicon)
 
