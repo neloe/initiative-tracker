@@ -24,7 +24,7 @@
       {
         "name": "initiative",
         "title": "Initiative",
-        "width": 3,
+        "width": 4,
         "file": "initiative.html",
         "headerColor": "#525F78"
       }
